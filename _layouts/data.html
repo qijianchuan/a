@@ -1,0 +1,2 @@
+{"category":[{%for category in site.categories %}{% if forloop.last==true %}{"name":"{{category|first}}","value":{{category|last|size}}}{% else %}{"name":"{{category|first}}","value":{{category|last|size}}},{% endif %}{% endfor%}],"tag":[{%for tag in
+site.tags %}{% if forloop.last==true %}{"name":"{{tag|first}}","value":{{tag|last|size}}}{% else %}{"name":"{{tag|first}}","value":{{tag|last|size}}},{% endif %}{% endfor%}]}

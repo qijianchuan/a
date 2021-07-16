@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include head.html %}
+
+<body>
+    <header>
+        <div id="siteMeta">
+            <a href="#">Nomar</a><span>记录一段历史</span>
+        </div>
+        {% include nav.html %}
+    </header>
+    <div class="container">
+        <div id="category_wrap">
+            <ul>
+                {% for category in site.categories %}
+                <li>{{category|first}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="posts-list">
+            <ul>
+                {% for post in site.posts %}
+                <li data-category="{{post.categories|join:" "}}">
+                    <a href="{{post.url|relative_url}}">{{post.title}}</a>
+                    <time>{{post.date|date:"%Y-%m-%d"}}</time>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% include footer.html %}
+    <script>
+        function show() {
+            document.querySelectorAll('.posts-list li').forEach(item => {
+                item.removeAttribute('hidden');
+                if (!item.getAttribute('data-category').includes(this.innerHTML)) {
+                    item.setAttribute('hidden', 'hidden');
+                }
+            })
+        }
+        document.querySelectorAll('#category_wrap li').forEach(element => element.addEventListener('click', show))
+    </script>
+</body>
+
+</html>

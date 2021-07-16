@@ -1,0 +1,44 @@
+#基础配置
+title: 技术博客
+email: your-email@example.com
+description: 
+baseurl: /a #  例如 /blog
+url: https://blog.nomar.cn # 网站域名. http://example.com
+
+
+#静态资源
+css: /assets/css
+img: /assets/img
+js: /assets/js
+
+#插件支持
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jemoji
+  - jekyll-avatar
+  - jekyll-mentions
+  - jekyll-paginate
+  - jekyll-gist
+
+collections:
+  json:
+    output: true
+
+defaults:
+  -
+    scope:
+      path: "" # 这里的空字符串表示项目中的所有文件
+      type: "posts" # previously `post` in Jekyll 2.2.
+    values:
+      layout: "post"
+
+
+# Build settings
+theme: minima
+
+paginate: 10
+paginate_path: "page:num"
+
+

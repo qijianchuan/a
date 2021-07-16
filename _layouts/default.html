@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include head.html %}
+
+<body>
+    <header>
+        <div id="siteMeta">
+            <a href="#">Nomar</a><span>记录一段历史</span>
+        </div>
+        {% include nav.html %}
+        <div class="block-bar-right">
+            <span id="radius_search_wrap" class="radius-btn radius-btn-search" onmouseover="showSearch()" onmouseout="hideSearch()">
+                <input class="inner-search-input" type="text">
+                <em class="iconfont icon-search"></em>
+            </span>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <article class="article-item-list">
+                <ul class="article-item-ul">
+                    {% for post in paginator.posts %}
+                    <li class="article-item-li">
+                        <article class="item">
+                            <article class="item-top">
+                                <h1 class="item-title"><a href="{{post.url|relative_url}}">{{ post.title }}</a></h1>
+                            </article>
+                            <article class="item-middle">
+                                {% if post.content=true %}
+                                {{post.content|strip_html|truncate: 120, '...'}}
+                                {% else %}
+                                {{post.items[0].body|strip_html|truncate: 120, '...'}}
+                                {% endif %}
+                            </article>
+                            <article class="item-bottom">
+                                {% assign categories = post.categories|size %}
+                                {% if categories !=0 %}
+                                分类：{% for category in post.categories limit:2 %}<span class="cat">{{category}}</span>
+                                {% endfor %}{% endif %} 
+                                标签：{% for tag in post.tags %}
+                                <span class="tag">{{tag}}</span>
+                                {% endfor %}
+                                <a href="{{site.url}}{{page.url}}">→阅读全文</a>
+                            </article>
+                        </article>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <ul class="paginator">
+                    {% if paginator.total_pages>1 %} {% if paginator.page==1 %}
+                    <li><a class="page first">首页</a></li>
+                    {% else %}
+                    <li><a class="page first" href="/">首页</a></li>
+                    {% endif %} {% if paginator.previous_page %} {% if paginator.previous_page==1 %}
+                    <li><a class="page prevlink" href="/">&laquo;</a></li>
+                    {% else %}
+                    <li><a class="page prevlink" href="{{site.baseurl}}/page{{paginator.previous_page}}">&laquo;</a></li>
+                    {% endif %} {% else %} {% endif %} {% if paginator.page
+                    <=3 %} {% for num in (1..paginator.total_pages) %} {% if forloop.index<=5 %} {% if num!=paginator.page %} {% if num==1 %} <li><a class="page" href="/">1</a></li>
+                        {% else %}
+                        <li><a class="page" href="{{site.baseurl}}/page{{num}}">{{num}}</a></li>
+                        {% endif %} {% endif %} {% if num==paginator.page %}
+                        <li><a class="page current" href="javascript:;">{{num}}</a></li>
+                        {% endif %} {% endif %} {% endfor %} {% else %} {% assign index1=paginator.page|plus:1 %} {% assign index2=paginator.page|plus:2 %} {% if index1>paginator.total_pages and paginator.total_pages !=4 %}
+                        <li><a class="page" href="{{site.baseurl}}/page{{paginator.page|plus:-4}}">{{paginator.page|plus:-4}}</a></li>
+                        {% endif %} {% if index2>paginator.total_pages %}
+                        <li><a class="page" href="{{site.baseurl}}/page{{paginator.page|plus:-3}}">{{paginator.page|plus:-3}}</a></li>
+                        {% endif %}
+                        <li><a class="page" href="{{site.baseurl}}/page{{paginator.page|plus:-2}}">{{paginator.page|plus:-2}}</a></li>
+                        <li><a class="page" href="{{site.baseurl}}/page{{paginator.page|plus:-1}}">{{paginator.page|plus:-1}}</a></li>
+                        <li><a class="page current" href="javascript:;">{{paginator.page}}</a></li>
+                        {% if index1
+                        <=paginator.total_pages %} <li><a class="page" href="{{site.baseurl}}/page{{paginator.page|plus:1}}">{{paginator.page|plus:1}}</a></li>
+                            {% endif %} {% if index2
+                            <=paginator.total_pages %} <li><a class="page" href="{{site.baseurl}}/page{{paginator.page|plus:2}}">{{paginator.page|plus:2}}</a></li>
+                                {% endif %} {% endif %} {% if paginator.next_page %}
+                                <li><a class="page nextlink" href="{{site.baseurl}}/page{{paginator.next_page}}">&raquo;</a></li>
+                                <li><a class="page last" href="{{site.baseurl}}/page{{paginator.total_pages}}">末页</a></li>
+                                {% else %}
+
+                                <li><a class="page last">末页</a></li>
+                                {% endif %}
+                                <li><span>第{{paginator.page}}页 / 共{{paginator.total_pages}}页</span></li>
+                                {% else %} {% if paginator.posts %}
+                                <li><a class="page first">首页</a></li>
+                                <li><a class="page prevlink" href="javascript:;">&laquo;</a></li>
+                                <li>
+                                    <a href="javascript:;">1</a>
+                                </li>
+                                <li><a class="page nextlink" href="javascript:;">&raquo;</a></li>
+                                <li><a class="page last">末页</a></li>
+                                <li><span>第{{paginator.page}}页 / 共{{paginator.total_pages}}页 {% endif %} {% endif %}</span></li>
+                </ul>
+
+                <div class="pagination">
+                    <div class="prev">
+                        {% if paginator.previous_page %}
+                        <a href="{{ paginator.previous_page_path | relative_url }}">上一页</a> {% endif %}
+                    </div>
+
+                    <div class="tips">
+                        {{ paginator.page}} / {{ paginator.total_pages}}
+                    </div>
+
+                    <div class="next">
+                        {% if paginator.next_page %}
+                        <a href="{{ paginator.next_page_path | relative_url }}">下一页</a> {% endif %}
+                    </div>
+                </div>
+            </article>
+        </main>
+        {% include aside.html %}
+    </div>
+    {% include footer.html %}
+</body>
+</html>

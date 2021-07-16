@@ -1,0 +1,18 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">{% feed_meta %} {% seo %}
+    <meta name="description" content="请看{{page.title}}">
+    {% if page.tags>=1 %}
+    <meta name="keyword" content="{{page.tags|join:','}}"> 
+    {% else %}
+    <meta name="keyword" content="{{page.items[0].tags|join:','}}">
+    {% endif %}
+    <link rel="stylesheet" href="{{site.baseurl}}{{site.css}}/style.css" type="text/css" media="screen and (min-device-width:780px)">
+    <link rel="stylesheet" href="{{site.baseurl}}{{site.css}}/mobile.css" type="text/css" media="screen and (max-device-width:780px)">
+    <link rel="stylesheet" href="{{site.baseurl}}{{site.css}}/prism.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2346351_0vu4whehciwp.css">
+    <script src="{{site.baseurl}}{{site.js}}/index.js"></script>
+    <script src="{{site.baseurl}}{{site.js}}/prism.js"></script>
+    {% if page.mathjax %}{% include mathjax.html %}{% endif %}{% if page.title==标签页 %}{% include antv.html %}{% endif %}
+</head>

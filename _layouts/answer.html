@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include head.html %}
+
+<body>
+    <header>
+        <div id="siteMeta">
+            <a href="#">Nomar</a><span>记录一段历史</span>
+        </div>
+        {% include nav.html %}
+        <div class="block-bar-right">
+            <span id="radius_search_wrap" class="radius-btn radius-btn-search" onmouseover="showSearch()" onmouseout="hideSearch()">
+                <input class="inner-search-input" type="text">
+                <em class="iconfont icon-search"></em>
+            </span>
+        </div>
+    </header>
+    <div class="container">
+        <main>
+            <article class="article-single-post">
+                <article class="single-post-title">{{page.title}}</article>
+                 <article class="single-post-meta">
+                    标签：{% for tag in page.items[0].tags %}<span class="single tag">{{tag}}</span>{% endfor %} <br>来源：<a class="single search" href="https://www.baidu.com/s?wd={{site.url}}{{page.url}}">百度</a>
+                </article>
+                <article class="single-post-content">
+                    {{page.items[0].body}}
+                </article>
+                <article class="single-post-comments">
+                        {% for comment in page.items[0].comments %}
+                        <article class="comment-unit">
+                            <strong>{{comment.owner.display_name}}: </strong><div>{{comment.body}}</div>
+                        </article>
+                        {% endfor %}
+                </article>
+            </article>
+            {% assign answers=page.items[0].answers|size %}
+            {% if answers>0 %}
+                <section>
+                    <h3>{{page.items[0].answers|size}}个回答</h3>
+                {% for answer in page.items[0].answers %}
+                    <article class="answer">
+                        <div><strong>{{answer.owner.display_name}}: </strong><span>发布于{{answer.creation_date|date: "%Y-%m-%d"}}</span></div>
+                        {{answer.body}}
+                        {% assign comments=answer.comments|size %}
+                        {% if comments >0 %}
+                            <article class="comment-unit">
+                               {% for comment in answer.comments %}
+                               <div class="comment-mb">
+                                <strong>{{comment.owner.display_name}}: </strong><div>{{comment.body}}</div>
+                                </div>
+                               {% endfor %}
+                            </article>
+                        {% endif %}
+                    </article>
+                {% endfor %}
+                </section>
+            {% endif %}
+            <section class="block-related">
+                {% capture category %}{{ page.categories | first }}{% endcapture %}
+                {%for post in site.categories[category] %}
+                    {{post.title}}
+                {% endfor %}
+                <div class="block-header">
+                    <h4 class="iconfont icon-fenlei">相关文章</h4>
+                </div>
+                <div class="block-wrap">
+                    {% capture tag %}{{ page.tags | first }}{% endcapture %}
+                    <ul>
+                    {%for post in site.tags[tag] limit: 10 %}
+                        <li><a href="{{post.url}}">{{post.title}}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </section>
+            <section class="block-random">
+                <div class="block-header">
+                    <h4 class="iconfont icon-fenlei">随机文章</h4>
+                </div>
+                <div class="block-wrap">
+                    {% assign random=site.posts | sample:10  %}
+                    <ul>
+                    {% for post in random %}
+                        <li><a href="{{post.url}}">{{post.title}}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </section>
+        </main>
+    {% include aside.html %}
+    </div>
+    <footer>
+        <section class="block-partner">
+            <div class="block-header">
+                <h4 class=" iconfont icon-hezuo">合作伙伴</h4>
+            </div>
+            <div class="block-wrap">
+                <ul>
+                    <li>
+                        <a class="iconfont icon-github" href="#"></a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="block-flink ">
+            <div class="block-header">
+                <h4 class=" iconfont icon-hezuo">友情链接</h4>
+            </div>
+            <div class="block-wrap">
+                <ul>
+                    <li>
+                        <a href="#">软考</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="block-copyright">
+            {% include analytics.html %}
+        </section>
+    </footer>
+
+</body>
+
+</html>

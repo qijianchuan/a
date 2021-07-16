@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include head.html %}
+
+<body>
+    <header>
+        <div id="siteMeta">
+            <a href="#">Nomar</a><span>记录一段历史</span>
+        </div>
+    {% include nav.html %}
+    </header>
+    <div class="container">
+        <div id="wordcloud">
+        </div>
+        <div class="posts-list">
+            <ul>
+                {% for post in site.posts %}
+                <li data-tag="{{post.tags|join:" "}}">
+                    <a href="{{post.url|relative_url}}">{{post.title}}</a>
+                    <time>{{post.date|date:"%Y-%m-%d"}}</time>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% include footer.html %}
+    <script>
+        fetch('{{site.url}}{{site.baseurl}}/data.json')
+            .then((res) => res.json()).then((json) => json.tag)
+            .then((data) => {
+                const wordCloud = new WordCloud('wordcloud', {
+                    data,
+                    wordField: 'name',
+                    weightField: 'value',
+                    colorField: 'name',
+                    spiral: 'rectangular',
+                    wordStyle: {
+                        fontFamily: 'Verdana',
+                        fontSize: [8, 32],
+                        rotation: 0,
+                    },
+
+                    // 返回值设置成一个 [0, 1) 区间内的值，
+                    // 可以让每次渲染的位置相同（前提是每次的宽高一致）。
+                    random: () => 0.5,
+                });
+                wordCloud.update({
+                    theme: 'dark'
+                });
+                wordCloud.on('element:click', (ev) => {
+                    const shape = ev.target.get('element');
+                    const data = shape.getData();
+                    let elements = document.querySelectorAll("li[data-tag]");
+                    for (let i = 0; i < elements.length; i++) {
+                        if (elements[i].hasAttribute('hidden')) {
+                            elements[i].removeAttribute('hidden');
+                        }
+                        if (!elements[i].getAttribute('data-tag').includes(data.text)) {
+                            elements[i].setAttribute('hidden', 'hidden');
+                        }
+                    }
+                    console.log(data.text)
+                })
+                wordCloud.render();
+            });
+    </script>
+</body>
+
+</html>
