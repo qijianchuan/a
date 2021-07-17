@@ -27,7 +27,7 @@
                                 <h1 class="item-title"><a href="{{post.url|relative_url}}">{{ post.title }}</a></h1>
                             </article>
                             <article class="item-middle">
-                                {% if post.content=true %}
+                                {% if post.content==true %}
                                 {{post.content|strip_html|truncate: 120, '...'}}
                                 {% else %}
                                 {{post.items[0].body|strip_html|truncate: 120, '...'}}
